@@ -3,79 +3,44 @@ import Edit from "../img/edit.png";
 import Delete from "../img/delete.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Menu from "../components/Menu";
-import axios from "axios";
-import moment from "moment";
-import { useContext } from "react";
-import { AuthContext } from "../context/authContext";
-import DOMPurify from "dompurify";
 
 const Single = () => {
-  const [post, setPost] = useState({});
-
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const postId = location.pathname.split("/")[2];
-
-  const { currentUser } = useContext(AuthContext);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`/posts/${postId}`);
-        setPost(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
-  }, [postId]);
-
-  const handleDelete = async ()=>{
-    try {
-      await axios.delete(`/posts/${postId}`);
-      navigate("/")
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  const getText = (html) =>{
-    const doc = new DOMParser().parseFromString(html, "text/html")
-    return doc.body.textContent
-  }
 
   return (
     <div className="single">
       <div className="content">
-        <img src={`../upload/${post?.img}`} alt="" />
+        <img src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="" />
         <div className="user">
-          {post.userImg && <img
-            src={post.userImg}
-            alt=""
-          />}
+          <img src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="" />
           <div className="info">
-            <span>{post.username}</span>
-            <p>Posted {moment(post.date).fromNow()}</p>
+            <span>John</span>
+            <p>Posted 2 days ago</p>
           </div>
-          {currentUser.username === post.username && (
-            <div className="edit">
-              <Link to={`/write?edit=2`} state={post}>
-                <img src={Edit} alt="" />
-              </Link>
-              <img onClick={handleDelete} src={Delete} alt="" />
-            </div>
-          )}
+
+          <div className="edit">
+            <Link to={`/write?edit=2`} >
+              <img src={Edit} alt="" />
+            </Link>
+            <img src={Delete} alt="" />
+          </div>
+
         </div>
-        <h1>{post.title}</h1>
-        <p
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(post.desc),
-          }}
-        ></p>      </div>
-      <Menu cat={post.cat}/>
+        <h1>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Veritatis amet consequatur sapiente, dicta at illo excepturi culpa iure quos sed corporis quia esse est minima nesciunt sequi. Nostrum, ea quos?</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi quod harum rem at deserunt distinctio inventore debitis magni, consequatur temporibus eligendi tempora reprehenderit veritatis, praesentium autem molestiae nobis a dolore!
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione enim beatae nemo dolores ullam iusto dolorum? Sunt exercitationem magnam neque laboriosam, in eligendi veniam ad inventore ea cumque eum commodi?
+          <br /><br />
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tempore odio eligendi corporis suscipit reiciendis. Amet saepe, facere labore laudantium, facilis voluptas id ex earum commodi adipisci numquam praesentium fuga iste!
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus itaque odit fugiat architecto esse et fugit accusamus, ducimus quia inventore, debitis, distinctio ut facere veritatis illo dolorem qui iste. Deserunt!
+          <br /><br />
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit temporibus nostrum labore eveniet. Eum quidem labore vero, officia sint aspernatur iste voluptate esse similique harum, numquam suscipit accusantium veritatis eveniet.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit fugit sequi corrupti, perferendis in ut nesciunt possimus! Totam fugiat sed fuga, fugit ut id odit minima debitis nisi! Inventore, quo.
+        </p>
+      </div>
+      <Menu />
+
     </div>
   );
+
 };
 
 export default Single;
