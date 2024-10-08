@@ -10,20 +10,29 @@ const Register = () => {
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+
+  const [err, setError] = useState(null);
+
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // console.log(inputs)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/auth/register", inputs)
-      console.log(res)
+      // console.log(inputs)
+
+      // const res = await axios.post("http://localhost:8800/api/auth/register", inputs)
+      await axios.post("http://localhost:8800/api/auth/register", inputs)
+      navigate("/login");
+      // console.log(res)
     } catch (error) {
+      setError(error.response.data);
       console.log(error);
-      console.log(error.response.data);
+      
     }
   };
 
@@ -55,7 +64,8 @@ const Register = () => {
 
         />
         <button onClick={handleSubmit} >Register</button>
-        <p>This is an error</p>
+
+        {err && <p>{err}</p>}
         <span>
           Do you have an account? <Link to="/login">Login</Link>
         </span>
